@@ -16,7 +16,50 @@ func check(e error) {
 }
 
 func main() {
-	exe1()
+	exe2()
+}
+
+func exe2() {
+
+	file, err := os.Open("data.txt")
+	check(err)
+
+	scanner := bufio.NewScanner(file)
+	gameNumber := 0
+	total := 0
+
+	for scanner.Scan() {
+		gameNumber += 1
+		var text = scanner.Text()
+		maxByColor := map[string]int {};
+		data := strings.Split(text, ":");
+		subsets := strings.Split(data[1], ";")
+
+		// Split all the subsets in each game
+		for _, subset := range subsets {
+			cubesBySubset := strings.Split(subset, ",")
+			// Split all the cubes in the subset
+			for _, cube := range cubesBySubset {
+				numberCube := strings.Split(cube, " ")
+				currentColor := numberCube[2]
+				currentNumber, _ := strconv.Atoi(numberCube[1])
+
+				_, ok := maxByColor[currentColor]
+				if !ok || currentNumber > maxByColor[currentColor] {
+					maxByColor[currentColor] = currentNumber
+				}
+			}
+
+		}
+		tempTotal := 1
+		fmt.Println(maxByColor)
+		for _, value := range maxByColor {
+			tempTotal *= value
+		}
+		total += tempTotal
+	}
+	fmt.Println(total)
+	check(scanner.Err())
 }
 
 func exe1() {
@@ -34,10 +77,6 @@ func exe1() {
 	for scanner.Scan() {
 		gameNumber += 1
 		var text = scanner.Text()
-		if err != nil {
-			fmt.Println("Error during conversion")
-			return
-		}
 		maxByColor := map[string]int {};
 		data := strings.Split(text, ":");
 		subsets := strings.Split(data[1], ";")
