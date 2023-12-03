@@ -47,8 +47,9 @@ func exe2() {
 				if isNumeric(value) {
 					elements = append(elements, element{rand.Int(),value, nLine, startPos, endPos, false, false})
 				} else {
-					// If the len is bigger than 1, it means the number is followed or precessed by a sign.
+					// If the len is bigger than 1, it means the value contains one or more substring to process
 					if len(value) > 1 {
+						// For all the characters found in the value
 						for _, character := range value {
 							if !unicode.IsDigit(character) {
 								startPosCharacter := strings.Index(text, fmt.Sprintf("%c",character))
@@ -60,6 +61,7 @@ func exe2() {
 						}
 						allNumbers := regexNumber.FindAllString(value,-1)
 
+						// For all the numbers found in the value
 						for _, number := range allNumbers {
 							startPosNumber := strings.Index(text, number)
 							endPosNumber := startPosNumber + len(number) - 1
@@ -212,12 +214,13 @@ func exe1() {
 	fmt.Println(totalSum)
 }
 
+// Return true if the given string is a numeric without any sign
 func isNumeric(s string) bool {
 	number, err := strconv.Atoi(s)
 	return err == nil && number > 0 && !strings.Contains(s,"+")
 }
 
-// Test if we should multiply and return the result of the multiplication
+// Test if we should multiply and return a gear that contains the current value
 func shouldMultiply(symbol string, currGear gear, newValue int) gear {
 	if symbol == "*" && currGear.number < 3 {
 		return gear{currGear.value * newValue, currGear.number + 1}
