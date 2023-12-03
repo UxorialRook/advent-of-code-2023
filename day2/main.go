@@ -90,7 +90,7 @@ func exe1() {
 				currentColor := numberCube[2]
 				currentNumber, _ := strconv.Atoi(numberCube[1])
 				
-				_, ok := maxByColoer[currentColor]
+				_, ok := maxByColor[currentColor]
 				if !ok || currentNumber > maxByColor[currentColor] {
 					maxByColor[currentColor] = currentNumber
 				}
