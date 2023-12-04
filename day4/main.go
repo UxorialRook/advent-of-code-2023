@@ -16,7 +16,7 @@ func check(e error) {
 }
 
 func main() {
-	exe1()
+	exe2()
 }
 
 func exe1() {
@@ -54,12 +54,70 @@ func exe1() {
 	fmt.Println(bigTotal)
 }
 
+func exe2() {
+	res := map[int]game {}
+	file, err := os.Open("data.txt")
+	check(err)
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
+	scanner := bufio.NewScanner(file)
+	numGame := 0
+	for scanner.Scan() {
+		numGame += 1
+		var text = scanner.Text()
+		text = strings.Split(text, ":")[1]
+		subset := strings.Split(text, "|");
+		var onlyNumberRegex = "[0-9]+"
+		regex := regexp.MustCompile(onlyNumberRegex)
+
+		winNumbers := regex.FindAllString(subset[0],-1)
+		fmt.Println(winNumbers)
+
+		allNumbers  := regex.FindAllString(subset[1],-1)
+		fmt.Println(allNumbers)
+
+		nbCopies := 0
+		for _, number := range allNumbers {
+			if contains(winNumbers, number) {
+				nbCopies += 1
+			}
+		}
+
+		res[numGame] = game{numGame, nbCopies, 1}
+
+	}
+
+	total := 0
+	// For each game, we need to add nbTimesToExecute for each nbCopies found
+	// Ex: if we found 4 copies, we add nbTimesToExecute to the next 4 games.
+	// nbTimesToExecute being the number of time we are going to execute the current game
+	for i := 1; i <= len(res); i++ {
+		game := res[i]
+		for game.nbCopies > 0 {
+			otherGame := res[game.numGame + game.nbCopies]
+			otherGame.nbTimesToExecute += game.nbTimesToExecute
+			res[game.numGame + game.nbCopies] = otherGame
+			game.nbCopies -= 1
+		}
+		fmt.Println("escalope", res)
+		total += game.nbTimesToExecute
+	}
+	fmt.Println(res)
+
+	fmt.Println(total)
+}
+
+// Basic contain function
+func contains(haystack []string, needel string) bool {
+	for _, element := range haystack {
+		if element == needel {
 			return true
 		}
 	}
 	return false
+}
+
+type game struct {
+	numGame int // ID of the game (counter)
+	nbCopies int // Number of copies (score of the current game)
+	nbTimesToExecute int // Number of times we need to execute the current game
 }
