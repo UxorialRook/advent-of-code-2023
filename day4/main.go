@@ -98,10 +98,8 @@ func exe2() {
 			res[game.numGame + game.nbCopies] = otherGame
 			game.nbCopies -= 1
 		}
-		fmt.Println("escalope", res)
 		total += game.nbTimesToExecute
 	}
-	fmt.Println(res)
 
 	fmt.Println(total)
 }
