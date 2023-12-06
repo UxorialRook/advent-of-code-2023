@@ -75,10 +75,10 @@ func exe2() {
 				seed := startRange + i
 				location := seed
 
-				locationAfterMapping := scanMaps(location, mapPipe)
+				newLoc := scanMaps(location, mapPipe)
 
-				if rangeMinLocation == 0 || locationAfterMapping < rangeMinLocation {
-					rangeMinLocation = locationAfterMapping
+				if rangeMinLocation == 0 || newLoc < rangeMinLocation {
+					rangeMinLocation = newLoc
 				}
 			}
 
