@@ -45,7 +45,7 @@ func exe2() {
 			// If the value is different than empty, it means there is an object (could be a number or a sign) that we want to parse
 			if value != "" {
 				if isNumeric(value) {
-					elements = append(elements, element{rand.Int(),value, nLine, startPos, endPos, false, false})
+					elements = append(elements, element{rand.Int(),mvalue, nLine, startPos, endPos, false, false})
 				} else {
 					// If the len is bigger than 1, it means the value contains one or more substring to process
 					if len(value) > 1 {
